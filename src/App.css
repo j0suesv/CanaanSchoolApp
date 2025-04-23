@@ -1,0 +1,34 @@
+.p-dialog-header{
+    padding: 30px 30px 15px 30px;
+}
+.p-dialog-footer{
+    padding: 30px;
+}
+.p-button{
+    padding: 8px;
+}
+.p-button-icon{
+    margin: 5px;
+}
+.p-datepicker-group-container, .p-datepicker-group{
+     padding: 6px;
+}
+.p-datepicker-month{
+    margin:4px;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    border-width: 0 0 1px 0;
+    padding: 0.5rem 0.5rem;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.5rem 0.5rem;
+}
+
+.p-dropdown-clear-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5rem;
+}
+
