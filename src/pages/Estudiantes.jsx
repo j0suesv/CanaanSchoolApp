@@ -3,15 +3,43 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Tag } from "primereact/tag";
 import { SearchBar } from "../components/SearchBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import RegisterForm from "../components/RegisterForm"
-
+import RegisterForm from "../components/RegisterForm";
+import { getEstudiantes, crearEstudiante } from "../api/api";
 
 export function Estudiantes() {
-  const [studentsData, setStudentsData] = useState(estudiantes);
+  const [studentsData, setStudentsData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
 
+  useEffect(() => {
+    fetchEstudiantes();
+  }, []);
+
+  const fetchEstudiantes = async () => {
+    try {
+      const res = await getEstudiantes();
+      setStudentsData(res.data);
+      setFilteredData(res.data);
+    } catch (err) {
+      console.error("Error cargando estudiantes:", err);
+    }
+  };
+
+  const handleCrearEstudiante = async (data) => {
+    await crearEstudiante(data);
+    fetchEstudiantes();
+    setVisible(false);
+  };
+
+  const searchStudent = (input) => {
+    const filter = studentsData.filter((student) =>
+      student.nombre.toLowerCase().includes(input.toLowerCase()) ||
+      student.apellido.toLowerCase().includes(input.toLowerCase())
+    );
+    setFilteredData(filter);
+  };
 
   const footerContent = (
     <div>
@@ -23,15 +51,6 @@ export function Estudiantes() {
       />
     </div>
   );
-
-  function searchStudent(input) {
-    const filterStudents = estudiantes.filter((student) =>
-      student.nombre.toLowerCase().includes(input.toLowerCase()) ||
-		student.apellido.toLowerCase().includes(input.toLowerCase()) 
-    );
-    setStudentsData(filterStudents);
-    // console.log("I got clicked");
-  }
 
   return (
     <Container>
@@ -52,27 +71,25 @@ export function Estudiantes() {
           footer={footerContent}
           style={{ width: "40vw" }}
           breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-          onHide={() => {
-            if (!visible) return;
-            setVisible(false);
-          }}
+          onHide={() => setVisible(false)}
         >
-          <RegisterForm/>
+          <RegisterForm onSubmit={handleCrearEstudiante} />
         </Dialog>
       </div>
       <div className="card-flex">
-        {studentsData.map(
+        {filteredData.map(
           ({
+            id,
             nombre,
             apellido,
             cedula,
             edad,
             curso,
-            valorMatricula,
-            valorMensualidad,
+            valor_matricula,
+            valor_mensualidad,
             saldo,
           }) => (
-            <div className="students-div" key={cedula}>
+            <div className="students-div" key={id}>
               <Card
                 title={nombre + " " + apellido}
                 subTitle={cedula}
@@ -86,8 +103,8 @@ export function Estudiantes() {
                   Edad: {edad} <br />
                   Curso: {curso}
                   <br />
-                  Matricula: {valorMatricula} <br />
-                  Mensualidad: {valorMensualidad} <br />
+                  Matricula: {valor_matricula} <br />
+                  Mensualidad: {valor_mensualidad} <br />
                   Saldo pendiente: {saldo} <br />
                 </p>
                 <Tag
@@ -103,59 +120,6 @@ export function Estudiantes() {
   );
 }
 
-const estudiantes = [
-  {
-    nombre: "Josue",
-    apellido: "Salcedo",
-    cedula: 1044604352,
-    edad: 20,
-    curso: "2A",
-    valorMatricula: 250,
-    valorMensualidad: 200,
-    saldo: 0,
-  },
-  {
-    nombre: "Pedro",
-    apellido: "Perez",
-    cedula: 1046597856,
-    edad: 12,
-    curso: "2A",
-    valorMatricula: 250,
-    valorMensualidad: 300,
-    saldo: 100,
-  },
-  {
-    nombre: "Marly",
-    apellido: "Mendez",
-    cedula: 1065845789,
-    edad: 22,
-    curso: "2A",
-    valorMatricula: 100,
-    valorMensualidad: 200,
-    saldo: 5,
-  },
-  {
-    nombre: "Nicolle",
-    apellido: "Rodriguez",
-    cedula: 1055489875,
-    edad: 5,
-    curso: "2A",
-    valorMatricula: 100,
-    valorMensualidad: 260,
-    saldo: 0,
-  },
-  {
-    nombre: "Juan",
-    apellido: "Valencia",
-    cedula: 1900245789,
-    edad: 21,
-    curso: "2A",
-    valorMatricula: 150,
-    valorMensualidad: 280,
-    saldo: 5,
-  },
-];
-
 const Container = styled.div`
   min-height: 100vh;
   padding: 0 30px;
@@ -165,7 +129,6 @@ const Container = styled.div`
     justify-content: end;
     margin: 20px 50px 20px 0;
   }
-	
 
   .new-student-button {
     margin-left: 20px;
@@ -174,13 +137,13 @@ const Container = styled.div`
   .card-flex {
     display: flex;
     flex-wrap: wrap;
-	justify-content: start;
-	gap: 15px;
-	margin: 10px 50px 20px 0;
+    justify-content: start;
+    gap: 15px;
+    margin: 10px 50px 20px 0;
   }
   .p-card {
     padding-top: 10px;
-	margin-bottom:15px;
+    margin-bottom: 15px;
     background: ${(props) => props.theme.bgAlpha};
     color: ${(props) => props.theme.text};
   }
@@ -195,7 +158,4 @@ const Container = styled.div`
   .students-div {
     margin: 6px;
   }
-
-
-
 `;

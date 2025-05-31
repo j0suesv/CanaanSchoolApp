@@ -1,112 +1,117 @@
 import styled from 'styled-components';
 import logo from "../assets/react.svg";
-import {v} from "../styles/Variables";
-import {AiOutlineLeft, AiOutlineHome, AiOutlineApartment, AiOutlineSetting} from "react-icons/ai";
+import { v } from "../styles/Variables";
+import { AiOutlineLeft, AiOutlineHome, AiOutlineApartment, AiOutlineSetting } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
-import { TbReportMoney , TbReportAnalytics} from "react-icons/tb";
-import {NavLink, useLocation} from "react-router-dom";
-import {useContext} from "react";
-import {ThemeContext} from "../App"
+import { TbReportMoney, TbReportAnalytics } from "react-icons/tb";
+import { NavLink, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext } from "../App"
 
-export function Sidebar({sidebarOpen, setSidebarOpen}){
-	const modifySidebarOpen= ()=>{
+export function Sidebar({ sidebarOpen, setSidebarOpen }) {
+	const modifySidebarOpen = () => {
 		setSidebarOpen(!sidebarOpen);
 	}
-	const{setTheme, theme} = useContext(ThemeContext);
-	const changeTheme=()=> {
-		setTheme((theme)=> (theme=== "light"?"dark":"light"))
+	const { setTheme, theme } = useContext(ThemeContext);
+	const changeTheme = () => {
+		setTheme((theme) => (theme === "light" ? "dark" : "light"))
 	}
 	return (
-		<Container isOpen = {sidebarOpen} themeUse={theme}>
+		<Container isOpen={sidebarOpen} themeUse={theme}>
 			<button className="sidebarButton" onClick={modifySidebarOpen}>
-				<AiOutlineLeft/>
+				<AiOutlineLeft />
 			</button>
-			<div className= "logoContent">
+			<div className="logoContent">
 				<div className="imgContent">
-					<img src={logo}/>
+					<img src={logo} />
 				</div>
 				<h2>Colcanaan</h2>
 			</div>
-			
-				{linksArray.map(({icon, label, to}) => (
-					<div className="linkContainer" key= {label}>
-							<NavLink to={to} className={({ isActive }) => `links${isActive ? ` active` : ``}`}>
-								<div className="linkIcon">
-									{icon}
 
-								</div>
-								{sidebarOpen && (<span>{label}</span>)}
-								
-							</NavLink>
-					</div>
-				))}
-				<Divider/>
-				{secondaryLinksArray.map(({icon, label, to}) => (
-					<div className="linkContainer" key= {label}>
-							<NavLink to={to} className={({ isActive }) => `links${isActive ? ` active` : ``}`}>
-								<div className="linkIcon">
-									{icon}
+			{linksArray.map(({ icon, label, to }) => (
+				<div className="linkContainer" key={label}>
+					<NavLink to={to} className={({ isActive }) => `links${isActive ? ` active` : ``}`}>
+						<div className="linkIcon">
+							{icon}
 
-								</div>
-								{sidebarOpen && (<span>{label}</span>)}
-								
-							</NavLink>
-					</div>
-				))}
-				<Divider/>
-				<div className="themeContent">
-					{sidebarOpen && <span className="titleTheme">Dark Mode</span>}
-					<div className="toggleContent">
-						<div className="grid theme-container">
-							<div className = "content">
-								<div className = "demo">
-									<label className="switch">
-										<input type="checkbox" className="theme-switcher" onClick={changeTheme}></input>
-										<span className="slider round"></span>
-									</label>
-								</div>
+						</div>
+						{sidebarOpen && (<span>{label}</span>)}
+
+					</NavLink>
+				</div>
+			))}
+			<Divider />
+			{secondaryLinksArray.map(({ icon, label, to }) => (
+				<div className="linkContainer" key={label}>
+					<NavLink
+						to={to}
+						className={({ isActive }) => `links${isActive ? ` active` : ``}`}
+						onClick={(e) => e.preventDefault()}
+						style={{
+							opacity: 0.5,
+							cursor: 'not-allowed'
+						}}
+						title="Funcionalidad no disponible por el momento"
+					>
+						<div className="linkIcon">{icon}</div>
+						{sidebarOpen && <span>{label}</span>}
+					</NavLink>
+				</div>
+			))}
+			<Divider />
+			<div className="themeContent">
+				{sidebarOpen && <span className="titleTheme">Dark Mode</span>}
+				<div className="toggleContent">
+					<div className="grid theme-container">
+						<div className="content">
+							<div className="demo">
+								<label className="switch">
+									<input type="checkbox" className="theme-switcher" onClick={changeTheme}></input>
+									<span className="slider round"></span>
+								</label>
 							</div>
 						</div>
 					</div>
-					
 				</div>
-				
-			
+
+			</div>
+
+
 		</Container>
 	);
-	
-}  
 
-const linksArray= [
+}
+
+const linksArray = [
 	{
 		label: "Inicio",
-		icon: <AiOutlineHome/>,
+		icon: <AiOutlineHome />,
 		to: "/"
 	},
 	{
 		label: "Pagos",
-		icon: <TbReportMoney/>,
+		icon: <TbReportMoney />,
 		to: "/pagos"
 	},
 	{
 		label: "Estudiantes",
-		icon: <SiGoogleclassroom/>,
+		icon: <SiGoogleclassroom />,
 		to: "/estudiantes"
 	}
-	
+
 ];
 
-const secondaryLinksArray= [
+const secondaryLinksArray = [
 	{
 		label: "Configuracion",
-		icon: <AiOutlineSetting/>,
+		icon: <AiOutlineSetting />,
 		to: "/configuracion"
 	},
 	{
 		label: "Cerrar Sesion",
-		icon: <MdLogout/>,
-		to: "/"
+		icon: <MdLogout />,
+		to: "/cerrar-sesion"
 	}
 ];
 
@@ -123,14 +128,14 @@ const Container = styled.div`
 		width: 32px;
 		height:32px;
 		border-radius: 50%;
-		background: ${(props)=> props.theme.bgtgderecha};
-		box-shadow: 0 0 4px ${(props)=>props.theme.bg3}, 0 0 7px ${(props) => props.theme.bg};
+		background: ${(props) => props.theme.bgtgderecha};
+		box-shadow: 0 0 4px ${(props) => props.theme.bg3}, 0 0 7px ${(props) => props.theme.bg};
 		display: flex;
 		justify-content: center;
     	align-items: center;
 		cursor: pointer;
 		transition: all 0.3s;
-		transform: ${({ isOpen }) => (isOpen ? `initial`:`rotate(180deg)`)};
+		transform: ${({ isOpen }) => (isOpen ? `initial` : `rotate(180deg)`)};
 		border: none;
 		letter-spacing: inherit;
 		color: inherit;
@@ -166,7 +171,7 @@ const Container = styled.div`
 	margin: 8px 0;
 	padding: 0 15%;
 	:hover{
-		background: ${(props)=> props.theme.bg3};
+		background: ${(props) => props.theme.bg3};
 		
 	}
 	.links{
@@ -177,7 +182,7 @@ const Container = styled.div`
 		color: ${(props) => props.theme.text};
       	height:50px;
 		&.active {
-			color: ${(props)=>props.theme.bg4}
+			color: ${(props) => props.theme.bg4}
 		}
 	}
 		.linkIcon{
@@ -190,7 +195,7 @@ const Container = styled.div`
 		.active{
 			.linkIcon{
 				svg{
-					color: ${(props)=>props.theme.bg4}
+					color: ${(props) => props.theme.bg4}
 				}
 			}
 		}
@@ -203,13 +208,13 @@ const Container = styled.div`
 				display: block;
 				padding: 10px;
 				font-weight: 700;
-				opacity:${({isOpen})=> (isOpen?`1`:`0`)};
+				opacity:${({ isOpen }) => (isOpen ? `1` : `0`)};
 				transition: all 0.3s;
 				white-space: nowrap;
 				overflow:hidden;
 			}
 			.toggleContent{
-				margin: ${({isOpen})=> (isOpen?`auto 40px`:`auto 15px`)};
+				margin: ${({ isOpen }) => (isOpen ? `auto 40px` : `auto 15px`)};
 				width: 36px;
 				height: 20px;
 				border-radius:10px;
@@ -252,7 +257,7 @@ const Container = styled.div`
 								left:0;
 								right:0;
 								bottom:0;
-								background: ${({themeUse})=> (themeUse==="light"? v.lightcheckbox : v.checkbox)};
+								background: ${({ themeUse }) => (themeUse === "light" ? v.lightcheckbox : v.checkbox)};
 								transition:0.4s;
 								&::before{
 									position: absolute;
@@ -280,9 +285,9 @@ const Container = styled.div`
 	
 ` ;
 
-const Divider= styled.div`
+const Divider = styled.div`
 	height: 1px;
 	width: 100%;
-	background: ${(props)=> props.theme.bg3};
+	background: ${(props) => props.theme.bg3};
 	margin: ${v.lgSpacing} 0;
 `
