@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// 🛠 Asegúrate de que esta URL apunte a tu backend (local o en producción)
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = "https://canaanschoolapp-production.up.railway.app/api";
 
 /* ========= ESTUDIANTES ========= */
 
