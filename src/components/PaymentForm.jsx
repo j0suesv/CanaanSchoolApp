@@ -41,7 +41,7 @@ function PaymentForm({ selected, onSubmit }) {
   const handleSubmit = () => {
     const data = {
       estudiante_id: studentID,
-      fecha: pDate,
+      fecha: pDate?.toISOString().split("T")[0],
       valor_abonado: vAbonado,
       mes_abonado: mAbonado,
       metodo_pago_id: selectedPMethod?.id,

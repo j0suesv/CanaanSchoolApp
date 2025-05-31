@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { useState, useEffect } from 'react';
 import { Dialog } from "primereact/dialog";
 import PaymentForm from "../components/PaymentForm";
+
 import {
   getPagos,
   crearPago,
@@ -103,7 +104,7 @@ export function Pagos() {
         visible={visible}
         modal
         header={selectedPayment ? "Editar pago" : "Registrar nuevo pago"}
-        footer={footerContent}
+        //footer={footerContent}
         style={{ width: "40vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
         onHide={() => setVisible(false)}
